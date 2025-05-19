@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="booking-form animate">
+            <h2 class="section-title">Verify OTP</h2>
+            <p class="text-center mb-4">We've sent an OTP to your phone number ending with {{ session['registration_data']['phone'][-4:] }}</p>
+            
+            <form method="POST" action="{{ url_for('verify_otp') }}">
+                <div class="form-group">
+                    <label for="otp" class="form-label">Enter OTP</label>
+                    <input type="text" class="form-control" id="otp" name="otp" required placeholder="6-digit OTP">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Verify</button>
+            </form>
+            
+            <p class="text-center mt-3">Didn't receive OTP? <a href="#" id="resend-otp">Resend</a></p>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.getElementById('resend-otp').addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('{{ url_for("verify_otp") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('OTP resent successfully!');
+            } else {
+                alert('Failed to resend OTP. Please try again.');
+            }
+        });
+    });
+</script>
+{% endblock %}

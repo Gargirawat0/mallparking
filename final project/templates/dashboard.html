@@ -1,0 +1,89 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <h1 class="section-title animate">Welcome, {{ current_user.name }}</h1>
+        
+        <div class="card animate" style="animation-delay: 0.2s">
+            <div class="card-header">
+                <h2 class="card-title">Active Bookings</h2>
+                <a href="{{ url_for('book_slot') }}" class="btn btn-primary">Book New Slot</a>
+            </div>
+            
+            {% if active_bookings %}
+                {% for booking in active_bookings %}
+                <div class="booking-card">
+                    <div class="booking-info">
+                        <div class="booking-slot">Slot {{ booking.slot.floor }}-{{ booking.slot.number }}</div>
+                        <div class="booking-date">
+                            {{ booking.booking_date.strftime('%d %b %Y') }} | 
+                            {{ booking.start_time.strftime('%I:%M %p') }} - {{ booking.end_time.strftime('%I:%M %p') }}
+                        </div>
+                        <div>Vehicle: {{ booking.vehicle_number }}</div>
+                        <div>Amount: ₹{{ booking.amount }}</div>
+                    </div>
+                    <div class="booking-status status-upcoming">Upcoming</div>
+                    <form method="POST" action="{{ url_for('cancel_booking', booking_id=booking.id) }}" style="margin-left: 10px;">
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No active bookings found. <a href="{{ url_for('book_slot') }}"></a></p>
+            {% endif %}
+        </div>
+        
+        <div class="card animate" style="animation-delay: 0.3s">
+            <div class="card-header">
+                <h2 class="card-title">Booking History</h2>
+            </div>
+            
+            {% if history_bookings %}
+                {% for booking in history_bookings %}
+                <div class="booking-card">
+                    <div class="booking-info">
+                        <div class="booking-slot">Slot {{ booking.slot.floor }}-{{ booking.slot.number }}</div>
+                        <div class="booking-date">
+                            {{ booking.booking_date.strftime('%d %b %Y') }} | 
+                            {{ booking.start_time.strftime('%I:%M %p') }} - {{ booking.end_time.strftime('%I:%M %p') }}
+                        </div>
+                        <div>Vehicle: {{ booking.vehicle_number }}</div>
+                        <div>Amount: ₹{{ booking.amount }}</div>
+                    </div>
+                    <div class="booking-status status-{{ booking.status }}">{{ booking.status|capitalize }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No booking history found.</p>
+            {% endif %}
+        </div>
+        
+        <div class="card animate" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <h2 class="card-title">Your Vehicles</h2>
+                <a href="{{ url_for('add_vehicle') }}" class="btn btn-primary">Add Vehicle</a>
+            </div>
+            
+            {% if current_user.vehicles %}
+                <div class="grid">
+                    {% for vehicle in current_user.vehicles %}
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-car" style="color: var(--primary-color)"></i>
+                            <h3 class="card-title">{{ vehicle.number }}</h3>
+                        </div>
+                        <form method="POST" action="{{ url_for('remove_vehicle', vehicle_id=vehicle.id) }}">
+                            <button type="submit" class="btn btn-danger btn-block">Remove</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No vehicles registered. <a href="{{ url_for('add_vehicle') }}">Add your vehicle now!</a></p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

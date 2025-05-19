@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content animate" style="animation-delay: 0.2s">
+            <h1 class="hero-title">Smart Parking for Modern Malls</h1>
+            <p class="hero-subtitle">Book your parking slot in advance and enjoy hassle-free shopping experience</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+        <div class="hero-image"></div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose MallPark?</h2>
+            <p class="section-description">Our parking solution makes your shopping experience seamless</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card animate" style="animation-delay: 0.3s">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="feature-title">Easy Booking</h3>
+                <p class="feature-description">Book your parking slot in just a few clicks. Select your preferred date, time and duration.</p>
+            </div>
+            
+            <div class="feature-card animate" style="animation-delay: 0.4s">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="feature-title">Real-time Availability</h3>
+                <p class="feature-description">View available slots in real-time with our interactive parking map.</p>
+            </div>
+            
+            <div class="feature-card animate" style="animation-delay: 0.5s">
+                <div class="feature-icon">
+                    <i class="fas fa-sms"></i>
+                </div>
+                <h3 class="feature-title">Instant Notifications</h3>
+                <p class="feature-description">Get SMS notifications for booking confirmations and reminders.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background-color: white;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    .section-description {
+        font-size: 1.1rem;
+        color: #6c757d;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .feature-card {
+        background-color: var(--light-color);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: var(--transition);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 25px;
+    }
+    
+    .feature-icon i {
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--dark-color);
+    }
+    
+    .feature-description {
+        color: #6c757d;
+        line-height: 1.6;
+    }
+    
+    /* Search Section */
+    .search-section {
+        padding: 60px 0;
+        background-color: #f8f9fa;
+    }
+    
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .search-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--dark-color);
+    }
+    
+    .search-box {
+        display: flex;
+        max-width: 500px;
+        margin: 0 auto 25px;
+    }
+    
+    .search-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #ddd;
+        border-radius: 50px 0 0 50px;
+        font-size: 1rem;
+        outline: none;
+        transition: var(--transition);
+    }
+    
+    .search-input:focus {
+        border-color: var(--primary-color);
+    }
+    
+    .search-button {
+        width: 60px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        border: none;
+        border-radius: 0 50px 50px 0;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .search-button:hover {
+        opacity: 0.9;
+    }
+    
+    .emoji-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .emoji-tag {
+        background-color: white;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .emoji-tag:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .feature-card {
+            padding: 25px;
+        }
+        
+        .search-box {
+            max-width: 100%;
+        }
+    }
+</style>
+{% endblock %}

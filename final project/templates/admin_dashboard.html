@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <h1 class="section-title animate">Admin Dashboard</h1>
+        
+        <div class="card animate" style="animation-delay: 0.2s">
+            <div class="card-header">
+                <h2 class="card-title">Upcoming Bookings</h2>
+            </div>
+            
+            {% if upcoming_bookings %}
+                <div class="grid">
+                    {% for booking in upcoming_bookings %}
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-car" style="color: var(--primary-color)"></i>
+                            <h3 class="card-title">Slot {{ booking.slot.floor }}-{{ booking.slot.number }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>User:</strong> {{ booking.user.name }} ({{ booking.user.phone }})</p>
+                            <p><strong>Vehicle:</strong> {{ booking.vehicle_number }}</p>
+                            <p><strong>Date:</strong> {{ booking.booking_date.strftime('%d %b %Y') }}</p>
+                            <p><strong>Time:</strong> {{ booking.start_time.strftime('%I:%M %p') }} - {{ booking.end_time.strftime('%I:%M %p') }}</p>
+                            <p><strong>Amount:</strong> ₹{{ booking.amount }}</p>
+                        </div>
+                        <form method="POST" action="{{ url_for('admin_cancel_booking', booking_id=booking.id) }}">
+                            <button type="submit" class="btn btn-danger btn-block">Cancel Booking</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No upcoming bookings found.</p>
+            {% endif %}
+        </div>
+        
+        <div class="card animate" style="animation-delay: 0.3s">
+            <div class="card-header">
+                <h2 class="card-title">Recent History</h2>
+            </div>
+            
+            {% if recent_history %}
+                <div class="grid">
+                    {% for booking in recent_history %}
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-car {{ 'car-icon-success' if booking.status == 'completed' else 'car-icon-danger' }}"></i>
+                            <h3 class="card-title">Slot {{ booking.slot.floor }}-{{ booking.slot.number }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>User:</strong> {{ booking.user.name }} ({{ booking.user.phone }})</p>
+                            <p><strong>Vehicle:</strong> {{ booking.vehicle_number }}</p>
+                            <p><strong>Date:</strong> {{ booking.booking_date.strftime('%d %b %Y') }}</p>
+                            <p><strong>Time:</strong> {{ booking.start_time.strftime('%I:%M %p') }} - {{ booking.end_time.strftime('%I:%M %p') }}</p>
+                            <p><strong>Status:</strong> <span class="status-{{ booking.status }}">{{ booking.status|capitalize }}</span></p>
+                            <p><strong>Amount:</strong> ₹{{ booking.amount }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No booking history found.</p>
+            {% endif %}
+        </div>
+        
+        <div class="card animate" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <h2 class="card-title">Registered Users</h2>
+            </div>
+            
+            {% if users %}
+                <div class="table-responsive">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Vehicles</th>
+                                <th>Total Bookings</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>
+                                    {% for vehicle in user.vehicles %}
+                                        {{ vehicle.number }}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>{{ user.bookings|length }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin_view_user_bookings', user_id=user.id) }}" class="btn btn-primary btn-sm">
+                                        View Bookings
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No registered users found.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    
+    .user-table th, .user-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .user-table th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .user-table tr:hover {
+        background-color: #f9f9f9;
+    }
+    
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .car-icon-success {
+        color: var(--success-color);
+    }
+
+    .car-icon-danger {
+        color: var(--danger-color);
+    }
+
+</style>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!-- templates/add_vehicle.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="booking-form animate">
+            <h2 class="section-title">Add Vehicle</h2>
+            <form method="POST" action="{{ url_for('add_vehicle') }}">
+                <div class="form-group">
+                    <label for="vehicle_number" class="form-label">Vehicle Number</label>
+                    <input type="text" class="form-control" id="vehicle_number" name="vehicle_number" required placeholder="Enter vehicle number">
+                    <small class="text-muted">Format: DL01AB1234 or similar</small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Add Vehicle</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-block mt-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vehicle number validation
+        const vehicleInput = document.getElementById('vehicle_number');
+        vehicleInput.addEventListener('input', function() {
+            const number = this.value;
+            const isValid = /^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{1,4}$/.test(number);
+            
+            if (number && !isValid) {
+                this.style.borderColor = 'var(--danger-color)';
+            } else {
+                this.style.borderColor = '';
+            }
+        });
+    });
+</script>
+{% endblock %}
